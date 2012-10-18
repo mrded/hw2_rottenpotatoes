@@ -7,16 +7,28 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @order_field = request.GET['order']
+    @got_field   = request.GET[:order]
+    
+    if request.GET[:ratings].is_a?(Hash)
+      @got_ratings = request.GET[:ratings]
+    else
+      @got_ratings = {'G' => true, 'PG' => true, 'R' => true, 'PG-13' => true}
+    end
+    
+    @all_ratings = ['G', 'PG', 'PG-13', 'R']
     
     @header = {
-      'title'        => view_context.link_to("Movie Title", "?order=title", {:id => 'title_header'}),
+      'title'        => view_context.link_to("Movie Title", params.merge(:order => 'title'), {:id => 'title_header'}),
       'rating'       => 'Rating',
-      'release_date' => view_context.link_to("Release Date", '?order=release_date', {:id => 'release_date_header'}),
+      'release_date' => view_context.link_to("Release Date", params.merge(:order => 'release_date'), {:id => 'release_date_header'}),
       'link'         => 'More Info',
     }
-      
-    @movies = Movie.find(:all, :order => @order_field)
+    
+    if (@got_ratings.empty?)
+      @movies = Movie.find(:all, :order => @got_field)
+    else
+      @movies = Movie.where(:rating => @got_ratings.keys).find(:all, :order => @got_field)
+    end
   end
 
   def new

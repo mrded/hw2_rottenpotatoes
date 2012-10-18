@@ -1,11 +1,18 @@
 -#  This file is app/views/movies/index.html.haml
 %h1 All Movies
 
+= form_tag movies_path, :method => :get do
+  Include: 
+  - @all_ratings.each do |rating|
+    = rating
+    = check_box_tag "ratings[#{rating}]", 1, @got_ratings[rating], :id => "ratings_#{rating}"
+  = submit_tag 'Refresh', :id => 'ratings_submit'
+
 %table#movies
   %thead
     %tr
       - @header.each do |field, value|
-        - if (field == @order_field) # If field is ordered then add class.
+        - if (field == @got_field) # If field is ordered then add class.
           %th.hilite= value
         - else
           %th= value
@@ -18,3 +25,5 @@
         %td= link_to "More about #{movie.title}", movie_path(movie)
 
 = link_to 'Add new movie', new_movie_path
+
+=p 'hello' if @got_ratings.empty?
