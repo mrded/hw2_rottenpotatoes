@@ -4,10 +4,11 @@
 %table#movies
   %thead
     %tr
-      %th Movie Title
-      %th Rating
-      %th Release Date
-      %th More Info
+      - @header.each do |field, value|
+        - if (field == @order_field) # If field is ordered then add class.
+          %th.hilite= value
+        - else
+          %th= value
   %tbody
     - @movies.each do |movie|
       %tr

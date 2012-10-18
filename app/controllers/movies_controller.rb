@@ -7,7 +7,16 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+    @order_field = request.GET['order']
+    
+    @header = {
+      'title'        => view_context.link_to("Movie Title", "?order=title"),
+      'rating'       => 'Rating',
+      'release_date' => view_context.link_to("Release Date", '?order=release_date'),
+      'link'         => 'More Info',
+    }
+      
+    @movies = Movie.find(:all, :order => @order_field)
   end
 
   def new
