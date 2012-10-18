@@ -10,9 +10,9 @@ class MoviesController < ApplicationController
     @order_field = request.GET['order']
     
     @header = {
-      'title'        => view_context.link_to("Movie Title", "?order=title"),
+      'title'        => view_context.link_to("Movie Title", "?order=title", {:id => 'title_header'}),
       'rating'       => 'Rating',
-      'release_date' => view_context.link_to("Release Date", '?order=release_date'),
+      'release_date' => view_context.link_to("Release Date", '?order=release_date', {:id => 'release_date_header'}),
       'link'         => 'More Info',
     }
       
