@@ -7,18 +7,23 @@ class MoviesController < ApplicationController
   end
 
   def index
-    # @got_field = request.GET[:order]
+    # session.delete(:order)
     
     if request.GET[:order]
       session[:order] = request.GET[:order]
+    elsif !session[:order]
+      redirect_to request.url + "?order=title"
     end
-    
     
     if (request.GET[:ratings].is_a?(Hash)) 
       session[:ratings] = request.GET[:ratings]
     elsif (!session[:ratings].is_a?(Hash))
       session[:ratings] = {'G' => true, 'PG' => true, 'R' => true, 'PG-13' => true}
     end
+    
+    
+    # default_post = {'G' => true, 'PG' => true, 'R' => true, 'PG-13' => true}
+    # redirect_to request.url + "?hello='hello'"
       
     @all_ratings = ['G', 'PG', 'PG-13', 'R']
     
