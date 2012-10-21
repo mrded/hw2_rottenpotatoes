@@ -12,7 +12,7 @@
   %thead
     %tr
       - @header.each do |field, value|
-        - if (field == @got_field) # If field is ordered then add class.
+        - if (field == session[:order]) # If field is ordered then add class.
           %th.hilite= value
         - else
           %th= value
