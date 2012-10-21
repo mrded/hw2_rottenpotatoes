@@ -7,14 +7,14 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @got_field   = request.GET[:order]
+    @got_field = request.GET[:order]
     
-    if request.GET[:ratings].is_a?(Hash)
-      @got_ratings = request.GET[:ratings]
-    else
-      @got_ratings = {'G' => true, 'PG' => true, 'R' => true, 'PG-13' => true}
+    if (request.GET[:ratings].is_a?(Hash)) 
+      session[:ratings] = request.GET[:ratings]
+    elsif (!session[:ratings].is_a?(Hash))
+      session[:ratings] = {'G' => true, 'PG' => true, 'R' => true, 'PG-13' => true}
     end
-    
+      
     @all_ratings = ['G', 'PG', 'PG-13', 'R']
     
     @header = {
@@ -24,10 +24,10 @@ class MoviesController < ApplicationController
       'link'         => 'More Info',
     }
     
-    if (@got_ratings.empty?)
+    if (session[:ratings].empty?)
       @movies = Movie.find(:all, :order => @got_field)
     else
-      @movies = Movie.where(:rating => @got_ratings.keys).find(:all, :order => @got_field)
+      @movies = Movie.where(:rating => session[:ratings].keys).find(:all, :order => @got_field)
     end
   end
 

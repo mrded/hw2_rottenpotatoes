@@ -5,7 +5,7 @@
   Include: 
   - @all_ratings.each do |rating|
     = rating
-    = check_box_tag "ratings[#{rating}]", 1, @got_ratings[rating], :id => "ratings_#{rating}"
+    = check_box_tag "ratings[#{rating}]", 1, session[:ratings][rating], :id => "ratings_#{rating}"
   = submit_tag 'Refresh', :id => 'ratings_submit'
 
 %table#movies
@@ -25,5 +25,3 @@
         %td= link_to "More about #{movie.title}", movie_path(movie)
 
 = link_to 'Add new movie', new_movie_path
-
-=p 'hello' if @got_ratings.empty?
