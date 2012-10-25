@@ -16,8 +16,7 @@ class MoviesController < ApplicationController
     if request.GET[:order]
       session[:order] = request.GET[:order]
     elsif !session[:order]
-      flash.keep
-      redirect_to request.url + "?order=title"
+      session[:order] = 'title'
     end
     
     # TODO: For submit forms use params instead GET.
@@ -26,6 +25,12 @@ class MoviesController < ApplicationController
     elsif (!session[:ratings].is_a?(Hash))
       session[:ratings] = {'G' => true, 'PG' => true, 'R' => true, 'PG-13' => true}
     end
+    
+    if (!request.GET[:order])
+      flash.keep
+      redirect_to :controller => 'movies', :order => session[:order]  
+    end
+    
     
     # redirect_to request.url + "?hello='hello'"
       
