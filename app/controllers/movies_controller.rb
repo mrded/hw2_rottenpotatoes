@@ -6,23 +6,27 @@ class MoviesController < ApplicationController
     # will render app/views/movies/show.<extension> by default
   end
 
+  # def goto(type, arg)
+  #   
+  # end
+
   def index
     # session.delete(:order)
     
     if request.GET[:order]
       session[:order] = request.GET[:order]
     elsif !session[:order]
+      flash.keep
       redirect_to request.url + "?order=title"
     end
     
-    if (request.GET[:ratings].is_a?(Hash)) 
-      session[:ratings] = request.GET[:ratings]
+    # TODO: For submit forms use params instead GET.
+    if (params[:ratings].is_a?(Hash)) 
+      session[:ratings] = params[:ratings]
     elsif (!session[:ratings].is_a?(Hash))
       session[:ratings] = {'G' => true, 'PG' => true, 'R' => true, 'PG-13' => true}
     end
     
-    
-    # default_post = {'G' => true, 'PG' => true, 'R' => true, 'PG-13' => true}
     # redirect_to request.url + "?hello='hello'"
       
     @all_ratings = ['G', 'PG', 'PG-13', 'R']
